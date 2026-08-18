@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Goddytex Enterprise — practical learning in digital marketing, data analysis, agricultural science and animal health management." />
+  <title>Goddytex Enterprise | Learn. Analyze. Grow.</title>
+  <style>
+    :root{
+      --forest:#063f2a;
+      --green:#157a3f;
+      --lime:#8cc63e;
+      --mint:#edf8ee;
+      --cream:#f7faf5;
+      --ink:#10251b;
+      --muted:#64756c;
+      --line:#dce8df;
+      --white:#fff;
+      --shadow:0 18px 50px rgba(6,63,42,.10);
+      --radius:24px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--cream);line-height:1.6}
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .container{width:min(1140px,92%);margin:auto}
+    .nav{
+      position:sticky;top:0;z-index:50;background:rgba(247,250,245,.92);
+      backdrop-filter:blur(14px);border-bottom:1px solid rgba(220,232,223,.8)
+    }
+    .nav-inner{height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800}
+    .brand img{width:56px;height:56px;object-fit:contain}
+    .brand span{font-family:Inter,Segoe UI,Arial,sans-serif;letter-spacing:-.03em}
+    .brand small{display:block;font-size:10px;letter-spacing:.16em;color:var(--green);font-weight:700}
+    .links{display:flex;gap:28px;align-items:center;font-size:14px;font-weight:600}
+    .links a:hover{color:var(--green)}
+    .nav-cta,.hero-cta{background:var(--forest);color:white;padding:12px 20px;border-radius:999px;font-weight:700}
+    .nav-cta:hover,.hero-cta:hover{background:var(--green)}
+    .menu{display:none;border:0;background:none;font-size:28px;color:var(--forest)}
+
+    .hero{padding:76px 0 70px;overflow:hidden;position:relative}
+    .hero:before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:#dff0d8;right:-260px;top:-220px;opacity:.75}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;position:relative}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--green);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:18px}
+    .eyebrow i{width:9px;height:9px;background:var(--lime);border-radius:50%;display:block}
+    h1,h2,h3{font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.08;letter-spacing:-.045em}
+    h1{font-size:clamp(46px,6vw,76px);max-width:720px}
+    h1 span{color:var(--green)}
+    .hero p{font-size:19px;color:var(--muted);max-width:650px;margin:24px 0 30px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .secondary{padding:12px 20px;border:1px solid var(--line);border-radius:999px;background:white;font-weight:700}
+    .secondary:hover{border-color:var(--green);color:var(--green)}
+
+    .dashboard{height:390px;border-radius:22px;background:linear-gradient(145deg,#0a5136,#063522);padding:22px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
+    .dashboard:after{content:"";position:absolute;width:250px;height:250px;border-radius:50%;background:#8cc63e;opacity:.08;right:-90px;top:-80px}
+    .dash-top,.dash-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+    .dash-top{font-weight:800}.live-dot{color:#bfe58b;font-weight:600;text-transform:none;letter-spacing:0}
+    .dash-main{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:stretch;position:relative;z-index:1}
+    .mini-chart{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:17px;padding:16px}
+    .chart-title{font-size:12px;font-weight:700;margin-bottom:24px}
+    .bars{height:120px;display:flex;align-items:end;gap:8px;border-bottom:1px solid rgba(255,255,255,.15)}
+    .bars i{display:block;flex:1;background:#9ed05d;border-radius:6px 6px 0 0;min-height:15px}
+    .axis{display:flex;justify-content:space-between;font-size:9px;color:#b9cec3;margin-top:8px}
+    .learning-stack{display:grid;gap:7px}.learning-stack div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);border-radius:13px;padding:9px;display:flex;align-items:center;gap:8px;font-size:10px}.learning-stack b{font-size:15px}
+    .dash-bottom{color:#b9cec3;text-transform:none;letter-spacing:0}.dash-bottom strong{color:#fff}
+
+    .learn-cta{margin:20px 0 14px;padding:15px;background:#f5faf3;border:1px solid #e1eee0;border-radius:15px}
+    .learn-cta strong{display:block;font-size:12px;color:var(--forest);margin-bottom:4px}
+    .learn-cta span{display:block;font-size:11px;color:var(--muted);line-height:1.45;margin-bottom:8px}
+    .learn-cta a{font-size:11px;font-weight:800;color:var(--green)}
+    .learn-cta a:hover{text-decoration:underline}
+    .card{display:flex;flex-direction:column}
+    .card .tag{margin-top:auto;align-self:flex-start}
+
+    .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .testimonial{background:white;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 8px 30px rgba(6,63,42,.04)}
+    .testimonial>p{color:var(--muted);font-size:14px;min-height:110px}
+    .person{display:flex;gap:12px;align-items:center;border-top:1px solid var(--line);padding-top:18px;margin-top:20px}
+    .avatar{width:40px;height:40px;border-radius:50%;background:var(--mint);display:grid;place-items:center;color:var(--green);font-weight:800}
+    .person b{display:block;font-size:13px}.person span{font-size:11px;color:var(--muted)}
+    .credential-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .credential{background:white;border:1px solid #dcebdc;border-radius:22px;padding:28px}
+    .credential-label{font-size:10px;letter-spacing:.14em;font-weight:900;color:var(--green)}
+    .credential h3{font-size:21px;margin:14px 0 10px}.credential p{font-size:13px;color:var(--muted)}
+    .verification-note{margin-top:18px;background:rgba(255,255,255,.72);border:1px dashed #b8d4bc;border-radius:18px;padding:18px;display:flex;gap:16px;align-items:flex-start}
+    .verification-note strong{white-space:nowrap}.verification-note span{font-size:13px;color:var(--muted)}
+
+    .hero-card{background:var(--forest);border-radius:32px;padding:22px;box-shadow:var(--shadow);position:relative}
+    .hero-card img{border-radius:22px;height:390px;width:100%;object-fit:cover;background:#d8ead6}
+    .floating{position:absolute;left:-28px;bottom:38px;background:white;border-radius:18px;padding:16px 18px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}
+    .floating-icon{width:42px;height:42px;border-radius:12px;background:var(--mint);display:grid;place-items:center;font-size:20px}
+    .floating strong{display:block;font-size:14px}.floating span{font-size:12px;color:var(--muted)}
+
+    .strip{background:var(--forest);color:white;padding:18px 0}
+    .strip-inner{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;font-size:13px;font-weight:600}
+    .strip span{opacity:.9}.strip b{color:#bde779}
+
+    section{padding:90px 0}
+    .section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:36px}
+    .section-head h2{font-size:clamp(34px,4vw,52px);max-width:620px}
+    .section-head p{max-width:460px;color:var(--muted)}
+
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .card{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:26px;min-height:260px;transition:.25s;box-shadow:0 8px 30px rgba(6,63,42,.04)}
+    .card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+    .icon{width:52px;height:52px;border-radius:16px;background:var(--mint);display:grid;place-items:center;font-size:24px;margin-bottom:28px}
+    .card h3{font-size:22px;margin-bottom:12px}
+    .card p{color:var(--muted);font-size:14px}
+    .tag{display:inline-block;margin-top:20px;padding:7px 10px;border-radius:999px;background:#f3f7f2;color:var(--green);font-size:11px;font-weight:800}
+
+    .audience{background:#eaf5e8}
+    .audience-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:70px;align-items:center}
+    .audience h2{font-size:clamp(36px,4vw,56px)}
+    .audience p{color:var(--muted);margin-top:18px}
+    .audience-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .audience-item{background:white;border:1px solid #dcebdc;border-radius:20px;padding:22px}
+    .audience-item b{display:block;margin-bottom:6px}.audience-item span{font-size:13px;color:var(--muted)}
+
+    .process{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .step{padding:28px;border:1px solid var(--line);border-radius:var(--radius);background:white}
+    .num{font-family:Manrope;font-size:44px;color:#c7e5b4;font-weight:800}
+    .step h3{font-size:22px;margin:8px 0 10px}.step p{font-size:14px;color:var(--muted)}
+
+    .about{background:var(--forest);color:white}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+    .about h2{font-size:clamp(36px,4vw,55px)}
+    .about p{color:#c8d9d0;margin-top:20px}
+    .quote{border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:30px;background:rgba(255,255,255,.05)}
+    .quote-mark{font-size:50px;color:#a9d86c;font-family:Georgia;line-height:.8}
+    .quote p{font-size:19px;color:white;margin:12px 0 20px}
+    .placeholder{font-size:12px;color:#a9c0b3;background:rgba(255,255,255,.06);padding:9px 12px;border-radius:10px;display:inline-block}
+
+    .cta{padding:90px 0}
+    .cta-box{background:linear-gradient(135deg,#e7f5df,#f8fbf6);border:1px solid var(--line);border-radius:34px;padding:54px;display:flex;justify-content:space-between;align-items:center;gap:30px}
+    .cta h2{font-size:clamp(34px,4vw,50px);max-width:650px}
+    .contact{display:grid;grid-template-columns:.9fr 1.1fr;gap:24px}
+    .contact-card,.form{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:30px}
+    .contact-card h3{font-size:26px;margin-bottom:20px}
+    .contact-line{padding:15px 0;border-bottom:1px solid var(--line)}.contact-line:last-child{border-bottom:0}
+    .contact-line small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
+    .contact-line a{font-weight:700;color:var(--green)}
+    form{display:grid;gap:13px}.form-note{font-size:11px;color:var(--muted);margin-top:-3px}
+    input,textarea{width:100%;border:1px solid var(--line);background:#fbfdfb;border-radius:14px;padding:14px 15px;font:inherit;outline:none}
+    input:focus,textarea:focus{border-color:var(--green)}
+    textarea{min-height:130px;resize:vertical}
+    button{border:0;cursor:pointer;font:inherit}
+    .submit{background:var(--forest);color:white;padding:14px 20px;border-radius:14px;font-weight:800}
+
+    footer{background:#042d1f;color:#b9cbc2;padding:30px 0}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center}
+    .footer-brand{color:white;font-family:Manrope;font-weight:800}
+    .footer-inner small{font-size:12px}
+
+    @media(max-width:900px){
+      .links{display:none}.menu{display:block}
+      .hero-grid,.audience-grid,.about-grid,.contact{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr 1fr}.testimonial-grid,.credential-grid{grid-template-columns:1fr 1fr}
+      .hero-card{max-width:620px;margin:auto}
+      .floating{left:16px}
+      .section-head{display:block}.section-head p{margin-top:16px}
+    }
+    @media(max-width:560px){
+      .nav-inner{height:68px}.brand img{width:48px;height:48px}
+      .hero{padding:52px 0}.hero p{font-size:16px}
+      .cards,.audience-list,.process,.testimonial-grid,.credential-grid{grid-template-columns:1fr}
+      section{padding:65px 0}
+      .cta-box{padding:30px;display:block}.cta-box .hero-cta{display:inline-block;margin-top:22px}
+      .footer-inner{display:block}.footer-inner small{display:block;margin-top:8px}
+      .hero-card img{height:310px}.dashboard{height:310px}.dash-main{grid-template-columns:1fr}.learning-stack{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="brand">
+        <img src="logo.png" alt="Goddytex Enterprise logo">
+        <span>Goddytex Enterprise<small>LEARN • ANALYZE • GROW</small></span>
+      </a>
+      <nav class="links">
+        <a href="#programs">Programs</a>
+        <a href="#audience">Who It's For</a>
+        <a href="#how">How It Works</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#certifications">Credentials</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-cta" href="#contact">Get Started</a>
+      </nav>
+      <button class="menu" aria-label="Open menu" onclick="document.querySelector('.links').style.display='flex'">☰</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><i></i> Practical learning • Port Harcourt</div>
+          <h1>Learn practical skills. <span>Understand your data.</span> Grow with confidence.</h1>
+          <p>Goddytex Enterprise helps youths, beginners and small-scale farmers build practical skills in digital marketing, data analysis, agricultural science and animal health management.</p>
+          <div class="actions">
+            <a class="hero-cta" href="#contact">Start Learning</a>
+            <a class="secondary" href="#programs">Explore Learning Areas</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="dashboard">
+            <div class="dash-top"><span>GODDYTEX</span><span class="live-dot">● Learning hub</span></div>
+            <div class="dash-main">
+              <div class="mini-chart">
+                <div class="chart-title">Skills & Knowledge</div>
+                <div class="bars"><i style="height:45%"></i><i style="height:68%"></i><i style="height:54%"></i><i style="height:82%"></i><i style="height:74%"></i><i style="height:92%"></i></div>
+                <div class="axis"><span>Start</span><span>Progress</span></div>
+              </div>
+              <div class="learning-stack">
+                <div><b>📣</b><span>Digital Marketing</span></div>
+                <div><b>📊</b><span>Data Analysis</span></div>
+                <div><b>🌱</b><span>Agricultural Science</span></div>
+                <div><b>🐄</b><span>Animal Health</span></div>
+              </div>
+            </div>
+            <div class="dash-bottom"><span>Practical learning</span><strong>Port Harcourt, Nigeria</strong></div>
+          </div>
+          <div class="floating">
+            <div class="floating-icon">✓</div>
+            <div><strong>Built for beginners</strong><span>Clear, practical and structured</span></div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip">
+      <div class="container strip-inner">
+        <span><b>01</b> Digital Marketing</span>
+        <span><b>02</b> Data Analysis</span>
+        <span><b>03</b> Agricultural Science</span>
+        <span><b>04</b> Animal Health Management</span>
+      </div>
+    </div>
+
+    <section id="programs">
+      <div class="container">
+        <div class="section-head">
+          <h2>Practical skills for real-world growth.</h2>
+          <p>Choose the learning area that matches your goals. Contact us for current lesson details, schedules and fees.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="icon">📣</div>
+            <h3>Digital Marketing</h3>
+            <p>Learn how to use digital channels to promote products, services and ideas, even if you are starting from scratch.</p>
+            <div class="learn-cta"><strong>Ready to learn?</strong><span>Contact us to ask about the next Digital Marketing lesson and how to get started.</span><a href="https://wa.me/2349039352598?text=Hello%20Goddytex%20Enterprise,%20I%20am%20interested%20in%20your%20Digital%20Marketing%20lessons." target="_blank" rel="noopener">Ask about Digital Marketing →</a></div>
+            <span class="tag">BEGINNER FRIENDLY</span>
+          </article>
+          <article class="card">
+            <div class="icon">📊</div>
+            <h3>Data Analysis</h3>
+            <p>Build practical data skills and learn how to turn information into clear insights that support better decisions.</p>
+            <div class="learn-cta"><strong>Want to build your data skills?</strong><span>Send us a message and let us help you choose the right starting level.</span><a href="https://wa.me/2349039352598?text=Hello%20Goddytex%20Enterprise,%20I%20am%20interested%20in%20your%20Data%20Analysis lessons." target="_blank" rel="noopener">Ask about Data Analysis →</a></div>
+            <span class="tag">SKILL DEVELOPMENT</span>
+          </article>
+          <article class="card">
+            <div class="icon">🌾</div>
+            <h3>Agricultural Science</h3>
+            <p>Strengthen your understanding of agriculture through practical knowledge relevant to farming, production and everyday decisions.</p>
+            <div class="learn-cta"><strong>Looking to improve your farm knowledge?</strong><span>Contact us to discuss the agricultural topics you want to understand better.</span><a href="https://wa.me/2349039352598?text=Hello%20Goddytex%20Enterprise,%20I%20am interested%20in%20Agricultural%20Science lessons." target="_blank" rel="noopener">Ask about Agriculture →</a></div>
+            <span class="tag">AGRICULTURE</span>
+          </article>
+          <article class="card">
+            <div class="icon">🐄</div>
+            <h3>Animal Health Management</h3>
+            <p>Develop foundational knowledge in animal health management, livestock care and responsible farm practices.</p>
+            <div class="learn-cta"><strong>Want stronger livestock knowledge?</strong><span>Contact us to discuss your learning needs and the right topics for your level.</span><a href="https://wa.me/2349039352598?text=Hello%20Goddytex%20Enterprise,%20I%20am interested%20in Animal Health Management lessons." target="_blank" rel="noopener">Ask about Animal Health →</a></div>
+            <span class="tag">LIVESTOCK</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="audience" id="audience">
+      <div class="container audience-grid">
+        <div>
+          <div class="eyebrow"><i></i> Who we serve</div>
+          <h2>Start where you are. Build skills that move you forward.</h2>
+          <p>Whether you are starting a new career skill or looking for practical agricultural knowledge, our learning approach is designed to be clear, practical and beginner-friendly.</p>
+        </div>
+        <div class="audience-list">
+          <div class="audience-item"><b>Young people</b><span>Build useful skills for today’s digital and agricultural economy.</span></div>
+          <div class="audience-item"><b>Beginners</b><span>Start with accessible foundations before moving into deeper topics.</span></div>
+          <div class="audience-item"><b>Small-scale farmers</b><span>Explore knowledge that can support better-informed farm decisions.</span></div>
+          <div class="audience-item"><b>Curious learners</b><span>Discover practical subjects across digital, data and agriculture.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-head">
+          <h2>A simple path from interest to learning.</h2>
+          <p>Tell us what you want to learn, and we will help you identify the right starting point.</p>
+        </div>
+        <div class="process">
+          <div class="step"><div class="num">01</div><h3>Choose a learning area</h3><p>Select Digital Marketing, Data Analysis, Agricultural Science or Animal Health Management.</p></div>
+          <div class="step"><div class="num">02</div><h3>Ask about the program</h3><p>Contact Goddytex Enterprise for the latest course information, schedule and availability.</p></div>
+          <div class="step"><div class="num">03</div><h3>Start learning</h3><p>Begin your selected learning journey and build knowledge step by step.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about">
+      <div class="container about-grid">
+        <div>
+          <div class="eyebrow" style="color:#a9d86c"><i></i> About Goddytex Enterprise</div>
+          <h2>From digital skills to the farm, we focus on practical knowledge.</h2>
+          <p>Based in Port Harcourt, Goddytex Enterprise brings digital skills, data analysis, agricultural science and animal health management together in one practical learning brand.</p>
+        </div>
+        <div class="quote">
+          <div class="quote-mark">“</div>
+          <p>Data. Strategy. Growth. From Digital to Farm, We Deliver Results.</p>
+          <span class="placeholder">Brand tagline from supplied logo</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials">
+      <div class="container">
+        <div class="section-head">
+          <h2>Trust is built on real experience.</h2>
+          <p>We publish genuine learner and client feedback with permission. No invented reviews or anonymous praise.</p>
+        </div>
+        <div class="testimonial-grid">
+          <article class="testimonial"><div class="quote-mark" style="color:var(--green)">“</div><p>Verified learner feedback will appear here, with the learner's permission and enough context to make the experience meaningful.</p><div class="person"><div class="avatar">G</div><div><b>Verified learner</b><span>Digital Marketing / Data Analysis</span></div></div></article>
+          <article class="testimonial"><div class="quote-mark" style="color:var(--green)">“</div><p>Verified feedback from a farmer or agriculture learner will be added here once approved for publication.</p><div class="person"><div class="avatar">G</div><div><b>Verified learner</b><span>Agricultural Science / Animal Health</span></div></div></article>
+          <article class="testimonial"><div class="quote-mark" style="color:var(--green)">“</div><p>We prefer fewer genuine testimonials over a large collection of generic claims. Your trust matters.</p><div class="person"><div class="avatar">✓</div><div><b>Authenticity first</b><span>Goddytex Enterprise</span></div></div></article>
+        </div>
+      </div>
+    </section>
+
+<section id="certifications" class="audience">
+      <div class="container">
+        <div class="section-head">
+          <h2>Professional background & learning focus.</h2>
+          <p>Goddytex combines digital learning with practical agricultural and animal-health experience. Verified certificates and affiliations can be added when available.</p>
+        </div>
+        <div class="credential-grid">
+          <article class="credential"><span class="credential-label">EDUCATION</span><h3>HND — Animal Health & Production Technology</h3><p>Academic background supporting the agricultural and animal-health learning areas.</p></article>
+          <article class="credential"><span class="credential-label">PRACTICAL EXPERIENCE</span><h3>Farm Management & Animal Health</h3><p>Hands-on experience across poultry production, farm operations and animal-health management.</p></article>
+          <article class="credential"><span class="credential-label">DIGITAL SKILLS</span><h3>Data Analysis & Digital Marketing</h3><p>Practical learning focus covering data, online marketing and digital business skills.</p></article>
+        </div>
+        <div class="verification-note"><strong>Certificates & affiliations</strong><span>Official certificate images, issuing bodies and dates can be displayed here when supplied and verified. No unverified badges are used.</span></div>
+      </div>
+    </section>
+
+<section id="contact">
+      <div class="container">
+        <div class="section-head">
+          <h2>Ready to build a useful skill?</h2>
+          <p>Tell us what you want to learn. We will help you understand the available learning options and the next step.</p>
+        </div>
+        <div class="contact">
+          <div class="contact-card">
+            <h3>Contact Goddytex</h3>
+            <div class="contact-line"><small>Phone / WhatsApp</small><a href="tel:+2349039352598">09039352598</a></div>
+            <div class="contact-line"><small>Email</small><a href="mailto:goddytex10@gmail.com">goddytex10@gmail.com</a></div>
+            <div class="contact-line"><small>Location</small><strong>Port Harcourt, Rivers State, Nigeria</strong></div>
+          </div>
+          <div class="form">
+            <form onsubmit="event.preventDefault(); const n=this.querySelector('[name=name]').value, p=this.querySelector('[name=phone]').value, e=this.querySelector('[name=email]').value, m=this.querySelector('[name=message]').value; const text=`Hello Goddytex Enterprise,%0A%0AName: ${encodeURIComponent(n)}%0APhone: ${encodeURIComponent(p)}%0AEmail: ${encodeURIComponent(e)}%0A%0AEnquiry:%0A${encodeURIComponent(m)}`; window.open('https://wa.me/2349039352598?text='+text,'_blank');">
+              <input required name="name" placeholder="Your name">
+              <input required name="phone" type="tel" placeholder="Phone / WhatsApp number">
+              <input name="email" type="email" placeholder="Email address">
+              <textarea required name="message" placeholder="What would you like to learn?"></textarea>
+              <button class="submit" type="submit">Continue on WhatsApp</button><small class="form-note">Your message will open in WhatsApp so you can continue the conversation directly.</small>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-box">
+          <div><div class="eyebrow"><i></i> Goddytex Enterprise</div><h2>Build a useful skill. Make better decisions. Keep growing.</h2></div>
+          <a class="hero-cta" href="https://wa.me/2349039352598" target="_blank" rel="noopener">Talk to Goddytex on WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-brand">Goddytex Enterprise</div>
+      <small>© 2026 Goddytex Enterprise • Port Harcourt, Nigeria</small>
+    </div>
+  </footer>
+</body>
+</html>
