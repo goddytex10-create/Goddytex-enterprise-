@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Goddytex Learning Hub — professional online learning for digital skills, technology, agriculture and entrepreneurship.">
+<title>Goddytex Learning Hub</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--green:#0b5d3b;--green2:#087f5b;--gold:#d9a441;--bg:#f5f7f6;--card:#fff;--text:#17231e;--muted:#68756f;--border:#dfe7e2;--danger:#b42318;--shadow:0 10px 30px rgba(10,45,30,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+header{background:linear-gradient(135deg,#063d29,#0b6b47);color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 4px 20px #0002}
+.nav{max-width:1180px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:18px}.brand{font-weight:800;font-size:20px;white-space:nowrap}.brand span{color:#ffd46a}
+.navlinks{display:flex;gap:8px;margin-left:auto}.navlinks button{background:transparent;border:0;color:#fff;padding:9px 12px;border-radius:8px}.navlinks button:hover{background:#ffffff1c}
+.menu{display:none;margin-left:auto;background:#ffffff18;color:#fff;border:1px solid #ffffff33;padding:8px 11px;border-radius:8px}
+.container{max-width:1180px;margin:auto;padding:26px 18px}.hero{background:linear-gradient(135deg,#0b5d3b,#0b7650);color:#fff;border-radius:22px;padding:48px 34px;margin-bottom:28px;box-shadow:var(--shadow)}
+.hero h1{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:0 0 14px}.hero p{max-width:720px;font-size:18px;color:#e5f5ed}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{border:0;border-radius:10px;padding:11px 17px;font-weight:700;background:var(--green);color:#fff}.btn.secondary{background:#fff;color:var(--green)}.btn.outline{background:transparent;border:1px solid var(--border);color:var(--green)}.btn.danger{background:var(--danger)}
+.section-title{display:flex;justify-content:space-between;gap:12px;align-items:end;margin:30px 0 14px}.section-title h2{margin:0;font-size:26px}.muted{color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.search{flex:1;min-width:220px;border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;outline:none}.search:focus{border-color:var(--green2);box-shadow:0 0 0 3px #087f5b18}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow)}.card h3{margin:8px 0}.tag{display:inline-block;background:#e7f4ee;color:var(--green);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700}.card p{color:var(--muted)}
+.badge{font-size:12px;font-weight:700;color:var(--green2)}.progress{height:8px;background:#e7ece9;border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;background:var(--green2);width:0}
+.lesson-layout{display:grid;grid-template-columns:280px 1fr;gap:20px}.sidebar{position:sticky;top:82px;height:max-content}.lesson-item{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--border);background:#fff;padding:12px}.lesson-item.active{background:#e8f4ee;color:var(--green);font-weight:700}
+.content{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px}.content h1,.content h2,.content h3{line-height:1.25}.content pre{background:#102019;color:#eaf6f0;padding:16px;border-radius:10px;overflow:auto}.content blockquote{border-left:4px solid var(--gold);margin:18px 0;padding:8px 16px;background:#fff9ea}
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat strong{display:block;font-size:28px}.empty{padding:36px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--border);border-radius:14px}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.show{display:flex}.modalbox{background:#fff;border-radius:16px;max-width:480px;width:100%;padding:24px}.modalbox input,.modalbox textarea{width:100%;margin:7px 0 12px;border:1px solid var(--border);padding:11px;border-radius:9px}
+footer{margin-top:50px;background:#073d2a;color:#d9eee4;padding:32px 18px}.foot{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.notice{padding:12px 14px;border-radius:10px;background:#fff8df;color:#725500;margin:12px 0}.success{background:#e8f7ef;color:#075c38}.error{background:#fff0ee;color:#9c1c12}
+@media(max-width:800px){.navlinks{display:none}.menu{display:block}.nav.open .navlinks{display:flex;position:absolute;top:61px;left:0;right:0;background:#063d29;flex-direction:column;padding:10px}.grid{grid-template-columns:1fr}.lesson-layout{grid-template-columns:1fr}.sidebar{position:static}.statgrid{grid-template-columns:repeat(2,1fr)}.hero{padding:34px 22px}}
+</style>
+</head>
+<body>
+<header><nav class="nav" id="nav">
+<div class="brand">Goddytex <span>Learning Hub</span></div>
+<button class="menu" onclick="toggleMenu()">☰</button>
+<div class="navlinks">
+<button onclick="showHome()">Home</button><button onclick="showCourses()">Courses</button><button onclick="showDashboard()">Dashboard</button><button onclick="openAuth()">Login / Register</button>
+</div></nav></header>
+
+<main class="container" id="app"></main>
+
+<footer><div class="foot"><div><strong>Goddytex Learning Hub</strong><br>Learn practical skills. Build confidence. Create opportunities.</div><div>Digital Skills • Technology • Agriculture • Entrepreneurship</div></div></footer>
+
+<div class="modal" id="authModal"><div class="modalbox">
+<h2 id="authTitle">Student Login</h2>
+<p class="muted">Create an account or sign in to track learning progress.</p>
+<input id="authEmail" type="email" placeholder="Email address">
+<input id="authPassword" type="password" placeholder="Password">
+<input id="authName" type="text" placeholder="Full name (for registration)">
+<div class="actions"><button class="btn" onclick="submitAuth()">Continue</button><button class="btn outline" onclick="toggleAuthMode()">Switch to Register</button><button class="btn outline" onclick="closeAuth()">Close</button></div>
+<div id="authMsg"></div>
+</div></div>
+
+<script>
+const SUPABASE_URL="https://ppfqvookddovroriasvw.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_WpkeORt4v-eXs4yVHb5F7A_rq8DsDhS";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+
+let state={courses:[],course:null,lessons:[],lesson:null,user:null,authRegister:false};
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function toggleMenu(){document.getElementById("nav").classList.toggle("open")}
+function notice(msg,type="notice"){return `<div class="${type} notice">${esc(msg)}</div>`}
+async function getUser(){const {data}=await db.auth.getUser();state.user=data.user||null;return state.user}
+async function safeQuery(q){try{return await q}catch(e){return {data:null,error:e}}}
+
+function showHome(){
+document.getElementById("app").innerHTML=`
+<section class="hero"><span class="tag" style="background:#ffffff20;color:#fff">PROFESSIONAL ONLINE LEARNING</span>
+<h1>Learn skills that can move your future forward.</h1>
+<p>Goddytex Learning Hub is designed for students, beginners and the general public who want practical, understandable training in digital skills, technology, agriculture and entrepreneurship.</p>
+<div class="actions"><button class="btn secondary" onclick="showCourses()">Explore Courses</button><button class="btn" style="background:#ffffff20" onclick="openAuth()">Join the Hub</button></div></section>
+<div class="statgrid">
+<div class="card stat"><span class="muted">Learning</span><strong>Practical</strong><small>Lessons built for understanding</small></div>
+<div class="card stat"><span class="muted">Assessments</span><strong>Quizzes</strong><small>Test and reinforce knowledge</small></div>
+<div class="card stat"><span class="muted">Projects</span><strong>Hands-on</strong><small>Build evidence of your skills</small></div>
+<div class="card stat"><span class="muted">Progress</span><strong>Tracked</strong><small>Know where you stand</small></div></div>
+<div class="section-title"><div><h2>Featured learning areas</h2><p class="muted">Start with a skill that matches your goals.</p></div></div>
+<div class="grid">
+${["Data Analysis","Digital Marketing","Artificial Intelligence","Cybersecurity","Software Development","Web Development","Microsoft Excel","Power BI","SQL","Agriculture & Animal Health","Entrepreneurship"].map(x=>`<div class="card"><span class="tag">${esc(x)}</span><h3>Build practical ${esc(x)} skills</h3><p>Learn step by step with explanations, activities, assessments and projects.</p><button class="btn outline" onclick="showCourses('${esc(x)}')">Find courses</button></div>`).join("")}
+</div>`;
+loadCoursePreview();
+}
+
+async function loadCoursePreview(){
+const {data,error}=await safeQuery(db.from("courses").select("id,title,description,published").eq("published",true).order("created_at",{ascending:false}).limit(6));
+if(data&&data.length){/* database courses remain available through Courses */} 
+}
+
+async function showCourses(filter=""){
+document.getElementById("app").innerHTML=`<div class="section-title"><div><h1>Courses</h1><p class="muted">Choose a course and learn at your own pace.</p></div></div>
+<div class="toolbar"><input class="search" id="courseSearch" placeholder="Search courses..." value="${esc(filter)}" oninput="renderCourses()"></div>
+<div id="courseGrid" class="grid"><div class="empty">Loading courses...</div></div>`;
+const {data,error}=await safeQuery(db.from("courses").select("id,title,description,published").eq("published",true).order("created_at",{ascending:false}));
+if(error){document.getElementById("courseGrid").innerHTML=notice("We couldn't load courses from the database right now. Please check your connection and try again.","error");return}
+state.courses=data||[];
+renderCourses();
+}
+function renderCourses(){
+const term=(document.getElementById("courseSearch")?.value||"").toLowerCase();
+const list=state.courses.filter(c=>(c.title+" "+(c.description||"")).toLowerCase().includes(term));
+document.getElementById("courseGrid").innerHTML=list.length?list.map(c=>`<article class="card"><span class="tag">COURSE</span><h3>${esc(c.title)}</h3><p>${esc(c.description||"Practical, structured learning designed for beginners and developing professionals.")}</p><button class="btn" onclick="openCourse('${c.id}')">View course</button></article>`).join(""):`<div class="empty" style="grid-column:1/-1">No published course matches your search.</div>`;
+}
+async function openCourse(id){
+const c=state.courses.find(x=>x.id===id)||null;state.course=c;
+const {data,error}=await safeQuery(db.from("lessons").select("id,course_id,lesson_number,title,content,activity,published").eq("course_id",id).eq("published",true).order("lesson_number"));
+if(error){document.getElementById("app").innerHTML=notice("Unable to load lessons. Please try again.","error");return}
+state.lessons=data||[];
+document.getElementById("app").innerHTML=`<div class="section-title"><div><span class="tag">COURSE</span><h1>${esc(c?.title||"Course")}</h1><p class="muted">${esc(c?.description||"")}</p></div><button class="btn outline" onclick="showCourses()">← Courses</button></div>
+<div class="lesson-layout"><aside class="sidebar card"><strong>Course lessons</strong><div id="lessonList">${state.lessons.map((l,i)=>`<button class="lesson-item" onclick="openLesson(${i})">${i+1}. ${esc(l.title)}</button>`).join("")||`<p class="muted">Lessons will appear here when published.</p>`}</div></aside><section id="lessonArea" class="content">${state.lessons.length?"":`<div class="empty">This course has no published lessons yet.</div>`}</section></div>`;
+if(state.lessons.length)openLesson(0);
+}
+async function openLesson(i){
+const l=state.lessons[i];state.lesson=l;
+document.querySelectorAll(".lesson-item").forEach((b,n)=>b.classList.toggle("active",n===i));
+const content=l.content||"";
+document.getElementById("lessonArea").innerHTML=`
+<span class="tag">LESSON ${l.lesson_number}</span><h1>${esc(l.title)}</h1>
+<div class="notice"><strong>Learning objective:</strong> Understand the key concepts in this lesson and apply them in the practical activity.</div>
+<div class="lesson-content">${formatLesson(content)}</div>
+${l.activity?`<hr><h2>Practical Activity</h2><div class="card">${formatLesson(l.activity)}</div>`:""}
+<div class="actions"><button class="btn" onclick="markComplete('${l.id}')">✓ Mark lesson complete</button><button class="btn outline" onclick="bookmark('${l.id}')">🔖 Bookmark</button><button class="btn outline" onclick="addNote('${l.id}')">🗒 Add note</button></div>
+<div id="lessonMsg"></div>`;
+}
+function formatLesson(s){let x=esc(s);x=x.replace(/\n\n/g,"</p><p>").replace(/\n/g,"<br>");return `<p>${x}</p>`}
+async function requireUser(){if(state.user)return true;await getUser();if(!state.user){openAuth();return false}return true}
+async function markComplete(lessonId){
+if(!await requireUser())return;
+const {error}=await db.from("lesson_progress").upsert({student_id:state.user.id,lesson_id:lessonId,completed:true,completed_at:new Date().toISOString()},{onConflict:"student_id,lesson_id"});
+document.getElementById("lessonMsg").innerHTML=error?notice("Progress could not be saved. Check that your RLS policies allow your account to update its own progress.","error"):notice("Lesson completed and progress saved.","success");
+}
+async function bookmark(lessonId){
+if(!await requireUser())return;
+const {error}=await db.from("bookmarks").upsert({student_id:state.user.id,lesson_id:lessonId},{onConflict:"student_id,lesson_id"});
+document.getElementById("lessonMsg").innerHTML=error?notice("Bookmark could not be saved.","error"):notice("Lesson bookmarked.","success");
+}
+async function addNote(lessonId){
+document.getElementById("lessonMsg").innerHTML=notice("Personal notes will be added in a later upgrade. Your lesson progress and bookmarks are already supported.","notice");
+}
+async function showDashboard(){
+if(!await requireUser())return;
+const [p,e,b,c]=await Promise.all([
+db.from("lesson_progress").select("id,completed").eq("student_id",state.user.id),
+db.from("enrollments").select("course_id,status").eq("student_id",state.user.id),
+db.from("bookmarks").select("id").eq("student_id",state.user.id),
+db.from("certificates").select("id,certificate_number,issued_at").eq("student_id",state.user.id)
+]);
+document.getElementById("app").innerHTML=`<div class="section-title"><div><h1>Student Dashboard</h1><p class="muted">Welcome back, ${esc(state.user.email)}</p></div><button class="btn outline" onclick="signOut()">Sign out</button></div>
+<div class="statgrid"><div class="card stat"><span class="muted">Enrolled courses</span><strong>${e.data?.length||0}</strong></div><div class="card stat"><span class="muted">Lessons completed</span><strong>${p.data?.filter(x=>x.completed).length||0}</strong></div><div class="card stat"><span class="muted">Bookmarks</span><strong>${b.data?.length||0}</strong></div><div class="card stat"><span class="muted">Certificates</span><strong>${c.data?.length||0}</strong></div></div>
+<div class="section-title"><div><h2>Continue learning</h2><p class="muted">Choose a course from the catalogue to continue.</p></div><button class="btn" onclick="showCourses()">Browse courses</button></div>
+<div class="card"><h3>Your account</h3><p>${esc(state.user.email)}</p><p class="muted">As you learn, your completed lessons and other activities will appear here.</p></div>`;
+}
+function openAuth(){document.getElementById("authModal").classList.add("show");document.getElementById("authMsg").innerHTML="";document.getElementById("authName").style.display=state.authRegister?"block":"none";document.getElementById("authTitle").textContent=state.authRegister?"Create Student Account":"Student Login"}
+function closeAuth(){document.getElementById("authModal").classList.remove("show")}
+function toggleAuthMode(){state.authRegister=!state.authRegister;openAuth()}
+async function submitAuth(){
+const email=document.getElementById("authEmail").value.trim(),password=document.getElementById("authPassword").value,name=document.getElementById("authName").value.trim();
+if(!email||!password)return document.getElementById("authMsg").innerHTML=notice("Enter your email and password.","error");
+let result=state.authRegister?await db.auth.signUp({email,password,options:{data:{full_name:name}}}):await db.auth.signInWithPassword({email,password});
+if(result.error){document.getElementById("authMsg").innerHTML=notice(result.error.message,"error");return}
+if(state.authRegister){document.getElementById("authMsg").innerHTML=notice("Account created. Check your email if confirmation is enabled, then sign in.","success");}
+else{state.user=result.data.user;closeAuth();showDashboard();}
+}
+async function signOut(){await db.auth.signOut();state.user=null;showHome()}
+db.auth.onAuthStateChange((_event,session)=>{state.user=session?.user||null});
+showHome();
+</script>
+</body>
+</html>
