@@ -331,42 +331,129 @@ function esc(value){
 function lessonToLocal(row){
   return [String(row.lesson_number), row.title, '', parseObjectives(row.objectives), row.content || '', row.activity || '', row.knowledge_check || ''];
 }
+
 async function loadCoursesFromSupabase(){
   try{
     const {data: courseRows, error: courseError} = await supabaseClient
-      .from('courses').select('id,title,description,category,level,published').eq('published', true);
+      .from('courses')
+      .select('id,title,description,category,level,published')
+      .eq('published', true)
+      .order('title');
+
     if(courseError) throw courseError;
-    const dataCourse = (courseRows || []).find(c => c.id === 'data-analysis' || /data analysis/i.test(c.title));
-    if(!dataCourse) return;
+
     const {data: lessonRows, error: lessonError} = await supabaseClient
-      .from('lessons').select('lesson_number,title,content,activity,objectives,knowledge_check,published')
-      .eq('course_id', dataCourse.id).eq('published', true).order('lesson_number');
+      .from('lessons')
+      .select('course_id,lesson_number,title,content,activity,objectives,knowledge_check,published')
+      .eq('published', true)
+      .order('lesson_number');
+
     if(lessonError) throw lessonError;
-    if(!lessonRows || !lessonRows.length) return;
-    const remoteCourse = {
-      id:'data', icon:'📊', title:dataCourse.title || 'Professional Data Analysis',
-      tag:dataCourse.level || 'Career Skill',
-      desc:dataCourse.description || 'Learn practical data analysis skills from Excel and SQL to Power BI and portfolio projects.',
-      lessons: lessonRows.map(lessonToLocal)
+
+    const iconMap = {
+      'data analysis':'📊',
+      'digital marketing':'📱',
+      'agriculture':'🌾',
+      'animal health':'🐄',
+      'cybersecurity':'🔐',
+      'artificial intelligence':'🤖',
+      'software development':'💻',
+      'e-commerce':'🛒',
+      'online business':'🛒',
+      'blockchain':'⛓️',
+      'cryptocurrency':'₿',
+      'mobile app development':'📲',
+      'full-stack web development':'🌐',
+      'financial literacy':'💰',
+      'personal finance':'💰',
+      'data science':'🧠',
+      'machine learning':'🤖',
+      'forex trading':'📈',
+      'cloud computing':'☁️'
     };
-    const localIndex=courses.findIndex(c=>c.id==='data');
-    if(localIndex>=0) courses[localIndex]=remoteCourse; else courses.unshift(remoteCourse);
-    renderCourses();
-    currentCourse=Math.max(0, courses.findIndex(c=>c.id==='data'));
-    currentLesson=0;
-    document.getElementById('sidebarTitle').textContent=courses[currentCourse].title;
-    renderLessonList();
-    showLesson();
-    updateDashboard();
-    const status=document.getElementById('studentStatus');
-    if(status) status.textContent='Course content is connected to Goddytex Supabase and ready for learning.';
+
+    const getIcon = (title) => {
+      const name = String(title || '').toLowerCase();
+
+      for(const key in iconMap){
+        if(name.includes(key)) return iconMap[key];
+      }
+
+      return '📚';
+    };
+
+    const remoteCourses = (courseRows || []).map(c => {
+
+      const lessons = (lessonRows || [])
+        .filter(l => String(l.course_id) === String(c.id))
+        .map(lessonToLocal);
+
+      return {
+        id: String(c.id),
+        icon: getIcon(c.title),
+        title: c.title || 'Untitled Course',
+        tag: c.level || c.category || 'Professional Course',
+        desc: c.description || 'Professional course from Goddytex Learning Hub.',
+        teaching_note: 'Beginner-friendly and practical.',
+        lessons: lessons
+      };
+    });
+
+    if(remoteCourses.length){
+
+      courses = remoteCourses;
+
+      renderCourses();
+
+      currentCourse = 0;
+      currentLesson = 0;
+
+      if(courses.length){
+
+        document.getElementById('sidebarTitle').textContent =
+          courses[currentCourse].title;
+
+        renderLessonList();
+
+        if(courses[currentCourse].lessons.length){
+          showLesson();
+        }else{
+          document.getElementById('lessonTitle').textContent =
+            'Choose a lesson to begin';
+
+          document.getElementById('lessonDesc').textContent =
+            'Lessons for this course are being prepared.';
+        }
+      }
+
+      updateDashboard();
+
+      const status = document.getElementById('studentStatus');
+
+      if(status){
+        status.textContent =
+          'Courses and lessons are connected to Goddytex Supabase.';
+      }
+
+      console.log('Goddytex courses loaded:', remoteCourses);
+
+    }
+
   }catch(err){
+
     console.error('Supabase course load failed:', err);
-    const status=document.getElementById('studentStatus');
-    if(status) status.textContent='Using the built-in course catalogue. Check your Supabase connection if remote lessons do not appear.';
+
+    renderCourses();
+    updateDashboard();
+
+    const status = document.getElementById('studentStatus');
+
+    if(status){
+      status.textContent =
+        'Using the built-in course catalogue. Check your Supabase connection if remote courses do not appear.';
+    }
   }
 }
-
 function toggleMenu(){ document.querySelector('nav').classList.toggle('open'); }
 function closeMenu(){ document.querySelector('nav').classList.remove('open'); }
 
