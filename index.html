@@ -566,11 +566,18 @@ function updateDashboard(){
 }
 
 renderCourses();
-currentCourse=0; currentLesson=0;
-document.getElementById('sidebarTitle').textContent=courses[0].title;
-renderLessonList(); showLesson(); updateDashboard();
-// The complete academy curriculum is stored locally for reliable delivery.
-// Supabase can be connected later after the full curriculum is migrated.
+currentCourse = 0;
+currentLesson = 0;
+
+if(courses.length){
+  document.getElementById('sidebarTitle').textContent = courses[0].title;
+  renderLessonList();
+  showLesson();
+}
+
+updateDashboard();
+
+loadCoursesFromSupabase();
 </script>
 </body>
 </html>
